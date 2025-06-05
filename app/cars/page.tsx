@@ -8,10 +8,32 @@ import { ResponseErrorAPI } from "@/src/Interface/ResponseErrorAPI";
 import { VkxDatePicker } from "@/components/vkx-date-picker/vkx-date-picker";
 import { now, parseDate, today } from "@internationalized/date";
 import { VkxInput } from "@/components/vkx-input";
-import { DateValue } from "@heroui/react";
 import VkxButton from "@/components/vkx-button/vkx-button";
 import VkxDatatableGet, {DataTableHandle} from "@/components/vkx-datatableGet/vkx-data-table-get";  
 import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
+import React from "react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Input,
+  Button,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Chip,
+  User,
+  Pagination,
+  DateValue,
+  Spinner,
+  getKeyValue
+} from "@heroui/react";
+import TablePagination from "@/components/vkx-pagination/vkx-pagination";
+
 
   type SearchForm = {
     name: string;
@@ -24,6 +46,9 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     const [error, setError] = useState<ResponseErrorAPI | null>(null);
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
+    const [total, setTotal] = useState(0)
     const [searchForm,setSearchFrom] = useState<SearchForm>(
       {
         name: '',
@@ -44,6 +69,7 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
       { name: 'Email', value: 'email' },
       { name: 'Địa chỉ', value: 'address' },
       { name: 'Số điện thoại', value: 'phone' },
+      { name: "Hành động", value: "actions" },
     ] 
 
     const minValue = parseDate("2020-01-01");
@@ -72,9 +98,30 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
     const handleDateChange = (date: DateValue | null) => {
       setSearchFrom(prev => ({ ...prev, time: date }));
     };
+
+    // Hàm fetchData sẽ gọi API để lấy dữ liệu và cập nhật state
+    const fetchData = async () => {
+              setLoading(true)
+              try {
+                const query = new URLSearchParams({ pageNumber: page.toString(), pageSize: pageSize.toString(), ...search }).toString();
+                const fullUrl = `${HostUrl + 'company'}?${query}`;
+                const reponse = await HttpUtils.get<Company>(fullUrl);
+                if (reponse && reponse.items) {
+                  setCompany(reponse.items as Company[])
+                  setTotal(reponse.totalCount || 0)
+                } else {
+                  console.warn('Dữ liệu không hợp lệ:', reponse)
+                }
+              } catch (err) {
+                console.error('Lỗi khi tải dữ liệu:', err)
+              } finally {
+                setLoading(false)
+              }
+            }
     
 
     const navigateToDetail = (id: number) => {
+      debugger
       // Dùng router.push() để chuyển hướng đến trang chi tiết
       router.push(`/cars/${id}`);
     };
@@ -91,8 +138,9 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
     };
     // chạy 1 lần mỗi khi Companys Thay đổi
     useEffect(() => {
+      fetchData();
       console.log("kết quả trả về: ", Companys);
-    }, [Companys]);
+    }, [page, pageSize, searchForm, total]);
 
     const search = () => {
       // Xử lý tìm kiếm ở đây
@@ -100,6 +148,32 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
       console.log("Tìm kiếm với dữ liệu:", searchForm);
       // Gọi API hoặc lọc dữ liệu dựa trên searchForm
       // Ví dụ: fetchData(searchForm);
+    };
+
+    // Hàm để lấy giá trị của mỗi cột trong bảng
+    const getKeyValue = (item: any, columnKey: React.Key) => {
+      if (columnKey === "actions") {
+        return (
+          <div className="flex justify-end gap-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              onPress={() => navigateToDetail(item.id)}
+            >
+              Xem
+            </Button>
+            <Button
+              size="sm"
+              color="danger"
+              variant="flat"
+              onPress={() => deleteById(item.id)}
+            >
+              Xóa
+            </Button>
+          </div>
+        );
+      }
+      return item[columnKey as string];
     };
     
 
@@ -165,7 +239,39 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
           Tạo mới
         </button>
 
-        <VkxDatatableGet
+
+        <Table isStriped
+          bottomContent={
+            <TablePagination
+                page={page}
+                totalPages={Math.ceil(total / pageSize)}
+                pageSize={pageSize}
+                onPageChange={setPage}
+                onPageSizeChange={(newSize) => {
+                  setPageSize(newSize);
+                  setPage(1); // reset về trang đầu khi đổi size
+                }}
+            />
+              }> 
+            {/* Bảng dữ liệu với isStriped = thuộc tính đổi màu giữa các dòng */}
+            <TableHeader columns={columnsDatatable}> 
+                {/* Hiển thị tiêu đề cột và key thuộc tính trong đối tượng dữ liệu*/}
+                {(column) => (
+                  <TableColumn key={column.value}>{column.name}</TableColumn>
+                )}
+            </TableHeader>
+            <TableBody items={Companys}isLoading={loading}loadingContent={<Spinner label="Đang tải dữ liệu..." />}>   
+                {(item) => (
+                    <TableRow key={item.id}>    
+                        {(columnKey) => (
+                          <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                        )}
+                    </TableRow>
+                )}
+            </TableBody>
+          </Table>
+        
+        {/* <VkxDatatableGet
           objectdata = {Company}
           ref={tableRef}
           dataUrl="company"
@@ -177,46 +283,7 @@ import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
               <button className="text-red-600 underline">Xóa</button>
             </div>
           )}
-        />
-
-        {/* <table className="w-full table-auto border border-collapse border-gray-400">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-4 py-2">ID</th>
-              <th className="border px-4 py-2">Tên</th>
-              <th className="border px-4 py-2">Email</th>
-              <th className="border px-4 py-2">Địa chỉ</th>
-              <th className="border px-4 py-2">Số điện thoại</th>
-              <th className="border px-4 py-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Companys.map((company) => (
-              <tr key={company.id}>
-                <td className="border px-4 py-2">{company.id}</td>
-                <td className="border px-4 py-2">{company.name}</td>
-                <td className="border px-4 py-2">{company.email}</td>
-                <td className="border px-4 py-2">{company.address}</td>
-                <td className="border px-4 py-2">{company.phone}</td>
-                <td className="border px-4 py-2">
-                    <button
-                      onClick={() => navigateToDetail(company.id)}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      Xem chi tiết
-                    </button>
-
-                    <button
-                      onClick={() => deleteById(company.id)}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      - XÓA
-                    </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
+        /> */}
 
       </main>
     );
