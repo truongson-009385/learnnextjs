@@ -1,4 +1,4 @@
-export default function VkxInputLayout({
+export default function VkxModalLayout({
     children,
 }: {
     children: React.ReactNode;

@@ -2,21 +2,22 @@
 
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  FieldType,
-  FormDynamic,
-  getField,
-} from "./form-dynamic";
+import { FieldType, FormDynamic, getField } from "./form-dynamic";
 import VkxIconButton from "@/components/vkx-icon-button/vkx-icon-button";
 import { VkxForm } from "@/components/vkx-form/vkx-form";
 import VkxButton from "@/components/vkx-button/vkx-button";
-import { autoMapperToArray } from "@/utils/mapping-util";
+import { autoMapper, autoMapperToArray } from "@/utils/mapping-util";
+import { VkxSearchInput } from "@/components/vkx-search-input/vkx-search-input";
 
 class Student {
   name?: string = undefined;
   birthday?: Date = undefined;
   gender?: string = undefined;
   score?: number = undefined;
+}
+
+class Search {
+  keyword?: string = undefined;
 }
 
 export function EnterpriseFormPage() {
@@ -67,12 +68,28 @@ export function EnterpriseFormPage() {
       onSubmit={(e) => {
         e.preventDefault();
         var a = Object.fromEntries(new FormData(e.currentTarget));
+        console.log(a);
         var response = autoMapperToArray<Student>(a, new Student());
+        var search = autoMapper<Search>(a, new Search());
+
         console.log(response);
+        console.log(search);
       }}
     >
       <div className="p-3 border-1 rounded-xl border-gray-700">
         <table className="">
+          <thead>
+            <tr>
+              <th className="pb-5">
+                <VkxSearchInput
+                  className="max-w-xs"
+                  placeholder="Tìm kiếm"
+                  name="keyword"
+                ></VkxSearchInput>
+              </th>
+            </tr>
+          </thead>
+
           <tbody>
             {formDynamics?.map((formDyn, indexForm) => {
               return (

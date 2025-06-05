@@ -19,6 +19,7 @@ import { parseDate } from "@internationalized/date";
 import React from "react";
 import { EnterpriseFormPage } from "./enterprise-form";
 import { ReactHookFromTestPage } from "./react-hook-from-test";
+import { MultipleFormPage } from "./multiple-form";
 
 interface Student {
   name?: string;
@@ -172,6 +173,14 @@ export default function VkxTableFormPage() {
             <EnterpriseFormPage />
           </div>
         </div>
+
+        <div className="mt-6">
+          <h1 className="text-xl">3. Ví dụ multiple form</h1>
+          <div className="mt-6">
+            <MultipleFormPage />
+          </div>
+        </div>
+
       </div>
     </div>
   );

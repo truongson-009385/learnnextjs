@@ -2,6 +2,7 @@ import { FormProps, Form as HeroUIForm } from "@heroui/react";
 import React, { ReactNode, CSSProperties, FormHTMLAttributes } from "react";
 
 export interface VkxFormProps extends FormProps {
+  ariaLabel?: string;
   children: ReactNode;
   validationBehavior?: "native" | "aria";
   validationErrors?: Record<string, string | string[]>;
@@ -18,17 +19,19 @@ export interface VkxFormProps extends FormProps {
   className?: string;
   style?: CSSProperties;
   onInvalid?: React.FormEventHandler<HTMLFormElement>;
+  ref?:React.LegacyRef<HTMLFormElement> | undefined;
 }
 
-export const VkxForm: React.FC<VkxFormProps & { ariaLabel?: string }> = ({
+export const VkxForm: React.FC<VkxFormProps> = ({
+  ariaLabel = "VkxForm",
   children,
   className = "",
-  ariaLabel = "VkxForm",
   validationBehavior = "native",
   validationErrors,
   action,
   encType,
   role,
+  ref,
   method,
   target,
   autoComplete,
@@ -47,6 +50,7 @@ export const VkxForm: React.FC<VkxFormProps & { ariaLabel?: string }> = ({
       encType={encType}
       method={method}
       role={role}
+      ref={ref}
       style={style}
       target={target}
       validationBehavior={validationBehavior}

@@ -1,4 +1,4 @@
-export default function VkxInputLayout({
+export default function VkxSpacerLayout({
     children,
 }: {
     children: React.ReactNode;
