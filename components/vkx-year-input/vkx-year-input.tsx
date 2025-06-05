@@ -3,12 +3,15 @@ import { VkxSelectItem } from "../vkx-select/vkx-select-item";
 import { VkxSelectProps } from "../vkx-select/vkx-select-props";
 
 interface VkxYearInputProps extends Omit<VkxSelectProps, "selectItems"> {
+  ariaLabel?: string;
   selectItems?: VkxSelectItem[];
 }
 
-export const VkxYearInput: React.FC<
-  VkxYearInputProps & { ariaLabel?: string }
-> = ({ selectItems, ariaLabel = "VkxYearInput", ...props }) => {
+export const VkxYearInput: React.FC<VkxYearInputProps> = ({
+  selectItems,
+  ariaLabel = "VkxYearInput",
+  ...props
+}) => {
   getSelectItems();
 
   return (

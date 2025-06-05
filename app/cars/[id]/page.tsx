@@ -43,6 +43,8 @@ const optionsCheckbox = [
 ];
 
 const labelPlacement = "outside";
+const minPrice = 0;
+const maxPrice = 1000000000;
 
 // Khởi tạo sản phẩm mới
 const createNewProduct = (): Product => ({
@@ -111,6 +113,7 @@ export default function Page() {
     // Submit data to your backend API.
 
     console.log({ info, orther, products });
+    setReadOnly(true);
   };
 
   const handleInputChange = (
@@ -355,9 +358,6 @@ export default function Page() {
         <h2 className="text-2xl font-bold mb-0">Thông tin người dùng</h2>
         {readOnly ? (
           <ButtonGroup>
-            <VkxButton color="warning" type="button" onPress={onNewTableForm}>
-              Thêm mới SP
-            </VkxButton>
             <VkxButton
               color="primary"
               type="button"
@@ -452,9 +452,10 @@ export default function Page() {
               />
 
               <VkxRadioGroup
-                isReadOnly={readOnly}
+                isDisabled={readOnly}
                 label="Giới tính"
                 name="info.gender"
+                size="sm"
                 value={info.gender}
                 onChange={handleRadioChange}
               >
@@ -492,11 +493,13 @@ export default function Page() {
             />
 
             <VkxNumberInput
+              hideStepper
               isReadOnly={readOnly}
               label="Cân nặng"
               labelPlacement={labelPlacement}
               name="orther.weight"
               placeholder="Nhập số cân của bạn"
+              size="md"
               value={orther.weight}
               onValueChange={(value) =>
                 handleNumberChange(value, "orther.weight")
@@ -545,23 +548,25 @@ export default function Page() {
           <div className="grid gap-x-2 gap-y-3 grid-cols-1">
             <VkxCheckboxGroup
               isReadOnly={readOnly}
+              size="sm"
               label="Chọn các mục phù hợp"
               name="orther.groupOptions"
               value={orther.groupOptions}
               onChange={handleCheckboxGroupChange}
             >
               {optionsCheckbox.map((option) => (
-                <Checkbox
+                <VkxCheckbox
                   key={option.value}
                   isReadOnly={readOnly}
                   value={option.value}
                 >
                   {option.label}
-                </Checkbox>
+                </VkxCheckbox>
               ))}
             </VkxCheckboxGroup>
 
             <VkxCheckbox
+              size="sm"
               isReadOnly={readOnly}
               isSelected={orther.emailNotifications}
               onValueChange={handleCheckboxChange}
@@ -572,7 +577,12 @@ export default function Page() {
         </VKXCard>
 
         <VKXCard className="w-full">
-          <h3 className="text-md font-semibold mb-2">Danh sách sản phẩm</h3>
+          <nav className="w-full flex justify-between items-center mb-2">
+            <h3 className="text-md font-semibold mb-0">Danh sách sản phẩm</h3>
+            <VkxButton color="primary" type="button" onPress={onNewTableForm}>
+              Thêm mới SP
+            </VkxButton>
+          </nav>
           <Divider className="mb-5" />
           <Table aria-label="Product list table">
             <TableHeader>
@@ -637,8 +647,8 @@ export default function Page() {
                           minimumFractionDigits: 0,
                         }}
                         isReadOnly={readOnly}
-                        maxValue={1000000000}
-                        minValue={0}
+                        maxValue={maxPrice}
+                        minValue={minPrice}
                         value={prod.price}
                         onValueChange={(value) =>
                           handleProductNumberChange(value, index, "price")
@@ -649,14 +659,14 @@ export default function Page() {
                       <ButtonGroup>
                         <VkxButton
                           color="warning"
-                          isDisabled={!readOnly}
+                          isDisabled={readOnly}
                           onPress={() => onEditTableForm(prod.id)}
                         >
                           Sửa
                         </VkxButton>
                         <VkxButton
                           color="danger"
-                          isDisabled={!readOnly}
+                          isDisabled={readOnly}
                           onPress={() => onRemoveTableForm(prod.id)}
                         >
                           Xoá
@@ -735,8 +745,8 @@ export default function Page() {
               }}
               label="Giá (VNĐ)"
               labelPlacement="outside"
-              maxValue={1000000000}
-              minValue={0}
+              maxValue={maxPrice}
+              minValue={minPrice}
               placeholder="Nhập giá sản phẩm"
               value={modalData.price}
               onValueChange={(value) => handleModalNumberChange(value, "price")}

@@ -1,12 +1,15 @@
 import { ResponseErrorAPI } from "../Interface/ResponseErrorAPI";
 
-export function CreateHeaders(includeToken: boolean = true): Record<string, string> {
+export function CreateHeaders(
+  includeToken: boolean = true,
+): Record<string, string> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
 
   if (includeToken) {
     const token = "your_token_here"; // Có thể lấy từ localStorage hoặc cookies
+
     headers["Authorization"] = `Bearer ${token}`;
   }
 
@@ -14,22 +17,22 @@ export function CreateHeaders(includeToken: boolean = true): Record<string, stri
 }
 
 export async function handleApiError(response: Response): Promise<void> {
-  
   if (response.ok) return;
 
   let apiMessage = "Lỗi không xác định";
+
   try {
     const json = await response.json();
+
     apiMessage = json.message || JSON.stringify(json);
   } catch {
     apiMessage = await response.text();
   }
 
-  
   let customMessage = "";
-  
+
   switch (response.status) {
-    // case 200: 
+    // case 200:
     //   customMessage = "Hợp lệ.";
     case 400:
       customMessage = "Yêu cầu không hợp lệ. Vui lòng kiểm tra dữ liệu.";
@@ -54,9 +57,10 @@ export async function handleApiError(response: Response): Promise<void> {
   }
 
   var rs = new ResponseErrorAPI(); // extend error
-  rs.statusCode = response.status,
-  rs.apiErrorMessage = apiMessage,
-  rs.message = customMessage
+
+  (rs.statusCode = response.status),
+    (rs.apiErrorMessage = apiMessage),
+    (rs.message = customMessage);
 
   throw rs;
 }

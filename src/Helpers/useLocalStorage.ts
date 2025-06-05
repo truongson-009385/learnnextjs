@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
   // State local trong component, khởi tạo từ localStorage hoặc initialValue
@@ -9,9 +9,11 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
     try {
       const item = window.localStorage.getItem(key);
+
       return item ? (JSON.parse(item) as T) : initialValue;
     } catch (error) {
       console.warn("Lỗi khi lấy dữ liệu localStorage:", error);
+
       return initialValue;
     }
   });
@@ -21,6 +23,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
+
       setStoredValue(valueToStore);
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
