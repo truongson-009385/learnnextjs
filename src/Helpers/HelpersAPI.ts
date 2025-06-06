@@ -58,5 +58,5 @@ export async function handleApiError(response: Response): Promise<void> {
   rs.apiErrorMessage = apiMessage,
   rs.message = customMessage
 
-  throw rs;
+  throw JSON.stringify(rs);
 }

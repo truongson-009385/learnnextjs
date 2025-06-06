@@ -94,7 +94,6 @@ export default class HttpUtils {
     
             const contentType = response.headers.get("Content-Type");
             
-    
             if (contentType && contentType.includes("application/json")) {
                 const responseData = await response.json() as PagedResponse<T>; // reponse trả về không cố định
                 return responseData;
@@ -104,7 +103,7 @@ export default class HttpUtils {
             }
         }
         catch (error){
-            throw mapErrorToResponseError(error);
+            throw JSON.stringify(mapErrorToResponseError(error));
         }
     }
 
@@ -123,11 +122,7 @@ export default class HttpUtils {
                 method: "GET",
                 headers: headers,
             })
-
-            if (!response.ok) {
-                console.error(`HTTP error! status: ${response.status}`);
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            handleApiError(response);
             
             const contentType = response.headers.get("Content-Type");
             
@@ -141,7 +136,7 @@ export default class HttpUtils {
             }
         }
         catch (error){
-            throw mapErrorToResponseError(error);
+            throw JSON.stringify(mapErrorToResponseError(error));
         }
        
     }
@@ -164,12 +159,6 @@ export default class HttpUtils {
           });
 
           await handleApiError(response);
-      
-          if (!response.ok) {
-            console.error(`HTTP error! status: ${response.status}`);
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      
           const contentType = response.headers.get("Content-Type");
       
           if (contentType && contentType.includes("application/json")) {
@@ -180,7 +169,7 @@ export default class HttpUtils {
             throw new Error("Expected JSON, but received something else.");
           }
         } catch (error) {
-           throw mapErrorToResponseError(error);
+           throw JSON.stringify(mapErrorToResponseError(error));
         }
     }
 
@@ -211,7 +200,7 @@ export default class HttpUtils {
             throw new Error("Expected JSON, but received something else.");
           }
         } catch (error) {
-           throw mapErrorToResponseError(error);
+           throw JSON.stringify(mapErrorToResponseError(error));
         }
     }
 
@@ -235,12 +224,6 @@ export default class HttpUtils {
             })
 
             await handleApiError(response);
-            
-            if (!response.ok) {
-                console.error(`HTTP error! status: ${response.status}`);
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
             const contentType = response.headers.get("Content-Type");
             debugger
     
@@ -252,7 +235,7 @@ export default class HttpUtils {
             }
         }
         catch (error){
-            throw mapErrorToResponseError(error);
+            throw JSON.stringify(mapErrorToResponseError(error));
         }
        
     }
