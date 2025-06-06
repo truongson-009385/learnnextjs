@@ -103,55 +103,57 @@ export default class HttpUtils {
         headers: headers,
       });
 
-      handleApiError(response);
-
-      const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const responseData = (await response.json()) as PagedResponse<T>; // reponse trả về không cố định
-
-        return responseData;
-      } else {
-        throw new Error("Expected JSON, but received something else.");
-      }
-    } catch (error) {
-      throw mapErrorToResponseError(error);
+            handleApiError(response);
+    
+            const contentType = response.headers.get("Content-Type");
+            
+            if (contentType && contentType.includes("application/json")) {
+                const responseData = await response.json() as PagedResponse<T>; // reponse trả về không cố định
+                return responseData;
+            } else {
+                console.error("Expected JSON, but received something else.");
+                throw new Error("Expected JSON, but received something else.");
+            }
+        }
+        catch (error){
+            throw JSON.stringify(mapErrorToResponseError(error));
+        }
     }
-  }
 
-  private static async fetch_apiById<T>(apiUrl: string, id: string) {
-    const token = "your_token_here";
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // hoặc `Token ${token}` tùy theo backend
-    };
-
-    const apiUrlWithQuery = `${apiUrl}/${id}`;
-
-    try {
-      let response = await fetch(apiUrlWithQuery, {
-        method: "GET",
-        headers: headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const responseData = (await response.json()) as T;
-
-        return responseData;
-      } else {
-        console.error("Expected JSON, but received something else.");
-        throw new Error("Expected JSON, but received something else.");
-      }
-    } catch (error) {
-      throw mapErrorToResponseError(error);
+    private static async fetch_apiById<T>(apiUrl: string, id: string) 
+    {
+        const token = "your_token_here";
+        const headers = {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // hoặc `Token ${token}` tùy theo backend
+        };
+    
+        const apiUrlWithQuery = `${apiUrl}/${id}`;
+        
+        try{
+            let response = await fetch(apiUrlWithQuery, {
+                method: "GET",
+                headers: headers,
+            })
+            handleApiError(response);
+            
+            const contentType = response.headers.get("Content-Type");
+            
+    
+            if (contentType && contentType.includes("application/json")) {
+                const responseData = await response.json() as T;
+                return responseData;
+            } else {
+                console.error("Expected JSON, but received something else.");
+                throw new Error("Expected JSON, but received something else.");
+            }
+        }
+        catch (error){
+            throw JSON.stringify(mapErrorToResponseError(error));
+        }
+       
     }
-  }
+
 
   public static async fetch_create<T>(
     apiUrl: string,
@@ -168,25 +170,20 @@ export default class HttpUtils {
         body: JSON.stringify(data),
       });
 
-      await handleApiError(response);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const responseData = (await response.json()) as T;
-
-        return responseData;
-      } else {
-        throw new Error("Expected JSON, but received something else.");
-      }
-    } catch (error) {
-      throw mapErrorToResponseError(error);
+          await handleApiError(response);
+          const contentType = response.headers.get("Content-Type");
+      
+          if (contentType && contentType.includes("application/json")) {
+            const responseData = await response.json() as T;
+            return responseData;
+          } else {
+            console.error("Expected JSON, but received something else.");
+            throw new Error("Expected JSON, but received something else.");
+          }
+        } catch (error) {
+           throw JSON.stringify(mapErrorToResponseError(error));
+        }
     }
-  }
 
   public static async fetch_update<T>(
     apiUrl: string,
@@ -202,21 +199,21 @@ export default class HttpUtils {
         body: JSON.stringify(data),
       });
 
-      await handleApiError(response);
-
-      const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const responseData = (await response.json()) as T;
-
-        return responseData;
-      } else {
-        throw new Error("Expected JSON, but received something else.");
-      }
-    } catch (error) {
-      throw mapErrorToResponseError(error);
+          await handleApiError(response);
+      
+          const contentType = response.headers.get("Content-Type");
+      
+          if (contentType && contentType.includes("application/json")) {
+            const responseData = await response.json() as T;
+            return responseData;
+          } else {
+            console.error("Expected JSON, but received something else.");
+            throw new Error("Expected JSON, but received something else.");
+          }
+        } catch (error) {
+           throw JSON.stringify(mapErrorToResponseError(error));
+        }
     }
-  }
 
   public static async fetch_delete<T>(
     apiUrl: string,
@@ -236,23 +233,23 @@ export default class HttpUtils {
         headers: headers,
       });
 
-      await handleApiError(response);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const contentType = response.headers.get("Content-Type");
-
-      debugger;
-
-      if (contentType && contentType.includes("application/json")) {
-        return;
-      } else {
-        throw new Error("Expected JSON, but received something else.");
-      }
-    } catch (error) {
-      throw mapErrorToResponseError(error);
+            await handleApiError(response);
+            const contentType = response.headers.get("Content-Type");
+            debugger
+    
+            if (contentType && contentType.includes("application/json")) {
+               return ;
+            } else {
+                console.error("Expected JSON, but received something else.");
+                throw new Error("Expected JSON, but received something else.");
+            }
+        }
+        catch (error){
+            throw JSON.stringify(mapErrorToResponseError(error));
+        }
+       
     }
-  }
+
+
+
 }
