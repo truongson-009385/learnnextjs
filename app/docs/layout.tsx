@@ -14,23 +14,25 @@ const formComponents: NavigationModels[] = [
   { name: "Button", href: "/docs/vkx-button" },
   { name: "Checkbox", href: "/docs/vkx-checkbox" },
   { name: "Calendar", href: "/docs/vkx-calendar" },
-
+  
   { name: "CheckboxGroup", href: "/docs/vkx-checkbox-group" },
   { name: "DatePicker", href: "/docs/vkx-date-picker" },
   { name: "DateInput", href: "/docs/vkx-date-input" },
   { name: "MonthInput", href: "/docs/vkx-month-input" },
-
+  
   { name: "NumberInput", href: "/docs/vkx-number-input" },
   { name: "YearInput", href: "/docs/vkx-year-input" },
-
+  
   { name: "DateRangePicker", href: "/docs/vkx-date-range-picker" },
-
+  
   { name: "Form", href: "/docs/vkx-form" },
+  
   { name: "FileInput", href: "/docs/vkx-file-input" },
-
+  
+  { name: "GenericForm", href: "/docs/vkx-generic-form" },
   { name: "Input", href: "/docs/vkx-input" },
   { name: "IconButton", href: "/docs/vkx-icon-button" },
-
+  
   { name: "Link", href: "/docs/vkx-link" },
   { name: "Popover", href: "/docs/vkx-popover" },
   { name: "PasswordInput", href: "/docs/vkx-password-input" },
@@ -43,13 +45,11 @@ const formComponents: NavigationModels[] = [
   { name: "Slider", href: "/docs/vkx-slider" },
   { name: "Snippet", href: "/docs/vkx-snippet" },
   { name: "Skeleton", href: "/docs/vkx-skeleton" },
-
+  
   { name: "TextArea", href: "/docs/vkx-text-area" },
   { name: "TimeInput", href: "/docs/vkx-time-input" },
-
   { name: "Table", href: "/docs/vkx-table" },
   { name: "TableForm", href: "/docs/vkx-table-form" },
-
   { name: "Tooltip", href: "/docs/vkx-tooltip" },
 ];
 
