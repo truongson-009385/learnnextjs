@@ -107,6 +107,7 @@ export default function VkxFormPage() {
           )}
         </VkxForm>
       </div>
+      
       <div>
         <h1 className="text-xl font-medium text-black dark:text-white mb-2">
           3. Validation form

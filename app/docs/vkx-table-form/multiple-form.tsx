@@ -3,7 +3,6 @@ import { VkxForm } from "@/components/vkx-form/vkx-form";
 import { VkxInput } from "@/components/vkx-input";
 import { VkxNumberInput } from "@/components/vkx-number-input/vkx-number-input";
 import { useRef, useState } from "react";
-import { validate } from "uuid";
 
 class Customer {
   name?: string = undefined;
@@ -25,44 +24,46 @@ export function MultipleFormPage() {
 
   const validateProduct = (data: Product): any => {
     const errors: any = {};
+    let isError: boolean = false;
 
     if (!data.name) {
+      isError = true;
       errors.name = "Trường này bắt buộc nhập";
-      return errors;
     }
 
     if (data.name && data.name!.length > 30) {
+      isError = true;
       errors.name = "Độ dài của tên phải nhỏ hơn 30 ký tự";
-      return errors;
     }
 
     if (!data.price) {
+      isError = true;
       errors.price = "Trường này bắt buộc nhập";
-      return errors;
     }
 
-    return undefined;
+    return isError ? errors : undefined;
   };
 
   const validateCustomer = (data: Customer): any => {
     const errors: any = {};
+    let isError: boolean = false;
 
     if (!data.name) {
       errors.name = "Trường này bắt buộc nhập";
-      return errors;
+      isError = true;
     }
 
     if (data.name && data.name!.length > 30) {
       errors.name = "Độ dài của tên phải nhỏ hơn 30 ký tự";
-      return errors;
+      isError = true;
     }
 
     if (!data.email) {
       errors.email = "Trường này bắt buộc nhập";
-      return errors;
+      isError = true;
     }
 
-    return undefined;
+    return isError ? errors : undefined;
   };
 
   const handleSubmit = () => {

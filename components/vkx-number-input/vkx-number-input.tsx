@@ -1,7 +1,9 @@
 import { NumberInput, NumberInputProps } from "@heroui/number-input";
+import { NumberInputSlots, SlotsToClasses } from "@heroui/theme";
 import React from "react";
 export interface VkxNumberInputProps extends NumberInputProps {
   ariaLabel?: string;
+  classNames?: SlotsToClasses<NumberInputSlots>;
   className?: string;
   defaultValue?: number;
   value?: number;
@@ -26,9 +28,10 @@ export interface VkxNumberInputProps extends NumberInputProps {
   onClear?: (() => void | undefined) | undefined;
 }
 
-export const VkxNumberInput: React.FC<VkxNumberInputProps> = ({
+export function VkxNumberInput({
   ariaLabel = "VkxNumberInput",
   className,
+  classNames,
   defaultValue,
   value,
   placeholder,
@@ -46,16 +49,20 @@ export const VkxNumberInput: React.FC<VkxNumberInputProps> = ({
   size = "sm",
   name,
   formatOptions,
-  hideStepper,
+  hideStepper = true,
   readOnly,
   onValueChange,
   onClear,
   ...props
-}) => {
+}: VkxNumberInputProps) {
   return (
     <NumberInput
       aria-label={ariaLabel}
       className={className}
+      classNames={{
+        input: "text-right",
+        ...classNames,
+      }}
       defaultValue={defaultValue}
       value={value}
       placeholder={placeholder}
@@ -80,4 +87,4 @@ export const VkxNumberInput: React.FC<VkxNumberInputProps> = ({
       {...props}
     />
   );
-};
+}
