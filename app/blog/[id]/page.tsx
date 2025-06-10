@@ -1,6 +1,5 @@
 "use client";
 
-
 import VkxButton from "@/components/vkx-button/vkx-button";
 import { VkxForm } from "@/components/vkx-form/vkx-form";
 
@@ -11,8 +10,8 @@ interface Props {
   params: { id: string };
 }
 
-export  function BlogDetailPage({ params }: Props) {
-  const blog = "";
+export default function BlogDetailPage({ params }: Props) {
+  const blog = params.id;
 
   return (
     <VkxForm className="p-6 max-w-xl mx-auto">

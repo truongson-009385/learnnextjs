@@ -7,7 +7,7 @@ import accordionItems from "../../../public/fake-data/accordions.json";
 
 import { VkxAccordionProps } from "@/components/vkx-accordion/vkx-accordion-props";
 import { VkxAccordionItemProps } from "@/components/vkx-accordion/vkx-accordion-item-props";
-import { VkxAccordion } from "@/components";
+import { VkxAccordion } from "@/components/vkx-form";
 
 export default function VkxAccordionPage() {
   const [selected, setSelected] = useState<Set<string>>(new Set());

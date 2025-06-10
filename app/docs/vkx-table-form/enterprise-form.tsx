@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FieldType, FormDynamic, getField } from "./form-dynamic";
+import {
+  FieldType,
+  FormDynamic,
+  getField,
+} from "@/components/vkx-form";
 import VkxIconButton from "@/components/vkx-icon-button/vkx-icon-button";
 import { VkxForm } from "@/components/vkx-form/vkx-form";
 import VkxButton from "@/components/vkx-button/vkx-button";
@@ -69,8 +73,8 @@ export function EnterpriseFormPage() {
         e.preventDefault();
         var a = Object.fromEntries(new FormData(e.currentTarget));
         console.log(a);
-        var response = autoMapperToArray<Student>(a, new Student());
-        var search = autoMapper<Search>(a, new Search());
+        var response = autoMapperToArray<Student>(a, Student);
+        var search = autoMapper<Search>(a, Search);
 
         console.log(response);
         console.log(search);
