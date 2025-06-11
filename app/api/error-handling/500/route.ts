@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
-
-export async function GET(request: Request) {
+export async function GET() {
+  throw new Error("Lỗi máy chủ nội bộ mô phỏng");
 }

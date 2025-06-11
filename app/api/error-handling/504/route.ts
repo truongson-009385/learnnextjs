@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
-  const body = await request.json();
+export async function GET() {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  // Kiểm tra nếu thiếu tham số "name"
-  if (!body.name) {
-    return NextResponse.json({ error: "Name is required" }, { status: 400 });
-  }
-
-  return NextResponse.json({ message: "Success", data: body });
+  return NextResponse.json(
+    {
+      error: "Gateway Timeout",
+      message: "The server took too long to respond.",
+    },
+    { status: 504 },
+  );
 }

@@ -2,7 +2,7 @@
 "use client"; 
 import Company from "@/src/entities/Company";
 import { useRouter } from 'next/navigation';
-import HttpUtils from "@/utils/HttpUtils";
+import HttpUtils from "@/utils/http-util";
 import { useEffect, useRef, useState } from "react";
 import { ResponseErrorAPI } from "@/src/Interface/ResponseErrorAPI";
 import { VkxDatePicker } from "@/components/vkx-date-picker/vkx-date-picker";

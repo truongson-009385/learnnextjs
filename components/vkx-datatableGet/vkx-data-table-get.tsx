@@ -1,6 +1,6 @@
 'use client'
 
-import HttpUtils from '@/utils/HttpUtils';
+import HttpUtils from '@/utils/http-util';
 import { DateValue } from '@heroui/react';
 import React, {
   useState,

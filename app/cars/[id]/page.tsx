@@ -11,7 +11,6 @@ import {
   TableHeader,
   TableRow,
   ButtonGroup,
-  Checkbox,
 } from "@heroui/react";
 import { parseDate, CalendarDate, DateValue } from "@internationalized/date";
 
@@ -34,6 +33,7 @@ import { VkxTextArea } from "@/components/vkx-text-area/vkx-text-area";
 import { VkxSelect } from "@/components/vkx-select/vkx-select";
 import VkxCheckboxGroup from "@/components/vkx-checkbox/vkx-checkbox-group";
 import { VkxModal } from "@/components/vkx-modal/vkx-modal";
+import { useErrorLogger } from "@/src/contexts/ErrorLoggerContext";
 
 //variable
 const optionsCheckbox = [
@@ -86,10 +86,10 @@ export default function Page() {
   const [isEditMode, setIsEditMode] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    fetch("/api/cars")
+    fetch("/api/cars/123")
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Không tìm thấy dữ liệu!!!");
+          console.log("lỗi nè");
         }
 
         return res.json();
@@ -100,7 +100,7 @@ export default function Page() {
         setProducts(data.products);
       })
       .catch((e) => {
-        console.error(e);
+        console.log(e);
       });
   }, []);
 
@@ -117,7 +117,7 @@ export default function Page() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
@@ -212,54 +212,54 @@ export default function Page() {
   const handleProductInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    field: keyof Product,
+    field: keyof Product
   ) => {
     const { value } = e.target;
 
     setProducts((prev) =>
       prev.map((product, i) =>
-        i === index ? { ...product, [field]: value } : product,
-      ),
+        i === index ? { ...product, [field]: value } : product
+      )
     );
   };
 
   const handleProductDateChange = (
     date: DateValue | null,
     index: number,
-    field: keyof Product,
+    field: keyof Product
   ) => {
     const dateString = date?.toString() || "";
 
     setProducts((prev) =>
       prev.map((product, i) =>
-        i === index ? { ...product, [field]: dateString } : product,
-      ),
+        i === index ? { ...product, [field]: dateString } : product
+      )
     );
   };
 
   const handleProductSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number,
-    field: keyof Product,
+    field: keyof Product
   ) => {
     const { value } = e.target;
 
     setProducts((prev) =>
       prev.map((product, i) =>
-        i === index ? { ...product, [field]: value } : product,
-      ),
+        i === index ? { ...product, [field]: value } : product
+      )
     );
   };
 
   const handleProductNumberChange = (
     value: number,
     index: number,
-    field: keyof Product,
+    field: keyof Product
   ) => {
     setProducts((prev) =>
       prev.map((product, i) =>
-        i === index ? { ...product, [field]: value } : product,
-      ),
+        i === index ? { ...product, [field]: value } : product
+      )
     );
   };
 
@@ -295,7 +295,7 @@ export default function Page() {
 
   const handleModalDateChange = (
     date: DateValue | null,
-    field: keyof Product,
+    field: keyof Product
   ) => {
     const dateString = date?.toString() || "";
 
@@ -335,9 +335,7 @@ export default function Page() {
 
     if (isEditMode) {
       setProducts((prev) =>
-        prev.map((prod) =>
-          prod.id === modalData.id ? { ...modalData } : prod,
-        ),
+        prev.map((prod) => (prod.id === modalData.id ? { ...modalData } : prod))
       );
     } else {
       setProducts((prev) => [...prev, { ...modalData }]);
@@ -548,9 +546,9 @@ export default function Page() {
           <div className="grid gap-x-2 gap-y-3 grid-cols-1">
             <VkxCheckboxGroup
               isReadOnly={readOnly}
-              size="sm"
               label="Chọn các mục phù hợp"
               name="orther.groupOptions"
+              size="sm"
               value={orther.groupOptions}
               onChange={handleCheckboxGroupChange}
             >
@@ -566,9 +564,9 @@ export default function Page() {
             </VkxCheckboxGroup>
 
             <VkxCheckbox
-              size="sm"
               isReadOnly={readOnly}
               isSelected={orther.emailNotifications}
+              size="sm"
               onValueChange={handleCheckboxChange}
             >
               Đăng kí để nhận thông tin mới nhất

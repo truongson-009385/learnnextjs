@@ -4,7 +4,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import CompanyCreateDto from "@/src/DTOParams/Company/CompanyCreateDto";
-import HttpUtils from "@/utils/HttpUtils";
+import HttpUtils from "@/utils/http-util";
 import Company from "@/src/entities/Company";
 import { VkxForm } from "@/components/vkx-form/vkx-form";
 import { VkxInput } from "@/components/vkx-input/vkx-input";

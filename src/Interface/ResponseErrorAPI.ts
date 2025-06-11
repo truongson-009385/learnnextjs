@@ -1,5 +1,6 @@
-export class ResponseErrorAPI{
-    apiErrorMessage: string = '';
-    statusCode: number = 0;
-    message : string  = '';
+export class ResponseErrorAPI {
+  apiErrorMessage: string = "";
+  statusCode: number = 0;
+  message: string = "";
+  timestamp: string = "";
 }
